@@ -7,7 +7,7 @@ const navItems: NavItem[] = [
   { label: "About Us", href: "#about" },
   { label: "Travel", href: "#travel" },
   { label: "Simee", href: "#simee" },
-  { label: "Gallery", href: "#gallery" },
+  { label: "Future", href: "#future" },
 ];
 
 export default function Header(): JSX.Element {

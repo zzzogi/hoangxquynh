@@ -1,6 +1,6 @@
 import AboutUs from "@/components/AboutUs";
 import Footer from "@/components/Footer";
-import Gallery from "@/components/Gallery";
+import OurFuture from "@/components/OurFuture";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Simee from "@/components/Simee";
@@ -15,7 +15,7 @@ export default function Home(): JSX.Element {
       <AboutUs />
       <Travel />
       <Simee />
-      <Gallery />
+      <OurFuture />
       <Footer />
     </main>
   );
