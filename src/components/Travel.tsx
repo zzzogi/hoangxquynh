@@ -28,23 +28,19 @@ const destinations: Destination[] = [
     backgroundColor: "#ff6b6b",
     gradientFrom: "#ee5a6f",
     gradientTo: "#f29263",
-    imagePath: "/images/singapore.jpg",
+    imagePath: "/images/sg-1.jpg",
     highlights: [
       {
-        name: "Marina Bay Sands",
-        images: [
-          "/images/sg-mbs-1.jpg",
-          "/images/sg-mbs-2.jpg",
-          "/images/sg-mbs-3.jpg",
-        ],
+        name: "Singapore One",
+        images: ["/images/sg-2.jpg", "/images/sg-3.jpg"],
       },
       {
-        name: "Gardens by the Bay",
-        images: ["/images/sg-garden-1.jpg", "/images/sg-garden-2.jpg"],
+        name: "Singapore Two",
+        images: ["/images/sg-3.jpg", "/images/sg-4.jpg"],
       },
       {
-        name: "Sentosa Island",
-        images: ["/images/sg-sentosa-1.jpg", "/images/sg-sentosa-2.jpg"],
+        name: "Singapore Three",
+        images: ["/images/sg-4.jpg", "/images/sg-5.jpg"],
       },
     ],
   },
@@ -55,23 +51,19 @@ const destinations: Destination[] = [
     backgroundColor: "#4ecdc4",
     gradientFrom: "#44a08d",
     gradientTo: "#093637",
-    imagePath: "/images/thailand.jpg",
+    imagePath: "/images/th-1.jpg",
     highlights: [
       {
-        name: "Grand Palace",
-        images: [
-          "/images/th-palace-1.jpg",
-          "/images/th-palace-2.jpg",
-          "/images/th-palace-3.jpg",
-        ],
+        name: "Thailand 1",
+        images: ["/images/th-2.jpg", "/images/th-3.jpg"],
       },
       {
-        name: "Floating Market",
-        images: ["/images/th-market-1.jpg", "/images/th-market-2.jpg"],
+        name: "Thailand 2",
+        images: ["/images/th-3.jpg", "/images/th-4.jpg"],
       },
       {
-        name: "Phi Phi Islands",
-        images: ["/images/th-island-1.jpg", "/images/th-island-2.jpg"],
+        name: "Thailand 3",
+        images: ["/images/th-4.jpg", "/images/th-5.jpg"],
       },
     ],
   },
@@ -82,23 +74,19 @@ const destinations: Destination[] = [
     backgroundColor: "#a29bfe",
     gradientFrom: "#667eea",
     gradientTo: "#764ba2",
-    imagePath: "/images/korea.jpg",
+    imagePath: "/images/kr-1.jpg",
     highlights: [
       {
-        name: "Gyeongbokgung Palace",
-        images: ["/images/kr-palace-1.jpg", "/images/kr-palace-2.jpg"],
+        name: "Korea 1",
+        images: ["/images/kr-2.jpg", "/images/kr-3.jpg"],
       },
       {
-        name: "N Seoul Tower",
-        images: [
-          "/images/kr-tower-1.jpg",
-          "/images/kr-tower-2.jpg",
-          "/images/kr-tower-3.jpg",
-        ],
+        name: "Korea 2",
+        images: ["/images/kr-3.jpg", "/images/kr-4.jpg"],
       },
       {
-        name: "Myeongdong",
-        images: ["/images/kr-myeong-1.jpg", "/images/kr-myeong-2.jpg"],
+        name: "Korea 3",
+        images: ["/images/kr-4.jpg", "/images/kr-5.jpg"],
       },
     ],
   },
@@ -439,7 +427,7 @@ export default function Travel(): JSX.Element {
   );
 }
 
-// Photo Card Component
+// Photo Card Component with Image support
 function PhotoCard({
   dest,
   idx,
@@ -479,39 +467,92 @@ function PhotoCard({
         >
           {/* Main Image */}
           <div className="relative w-full h-full cursor-pointer">
-            {/* Default image */}
+            {/* Default image - Main destination photo */}
             <div
-              className="absolute inset-0 flex items-center justify-center text-9xl transition-opacity duration-500"
-              style={{
-                opacity:
-                  !hoveredHighlight || hoveredHighlight.destIdx !== idx ? 1 : 0,
-              }}
+              className={`absolute inset-0 transition-opacity duration-500 ${
+                !hoveredHighlight || hoveredHighlight.destIdx !== idx
+                  ? "opacity-100"
+                  : "opacity-0"
+              }`}
             >
-              {dest.emoji}
+              {dest.imagePath ? (
+                <Image
+                  src={dest.imagePath}
+                  alt={dest.country}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 280px, 400px"
+                />
+              ) : (
+                // Fallback to emoji if no image
+                <Image
+                  src={dest.emoji}
+                  alt={dest.country}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 280px, 400px"
+                />
+              )}
             </div>
 
-            {/* Hover/Click image */}
+            {/* Hover/Click image - Shows highlight specific image */}
             {hoveredHighlight && hoveredHighlight.destIdx === idx && (
-              <div
-                className="absolute inset-0 flex items-center justify-center text-9xl transition-opacity duration-500"
-                style={{ opacity: 1 }}
-              >
-                <div className="text-center">
-                  <div className="text-7xl mb-4">📸</div>
-                  <p className="text-white text-lg font-serif">
-                    {dest.highlights[hoveredHighlight.highlightIdx].name}
-                  </p>
-                  {isMobile && (
-                    <p className="text-white text-xs mt-2 opacity-70">
-                      ({hoveredHighlight.imageIdx + 1}/
-                      {
-                        dest.highlights[hoveredHighlight.highlightIdx].images
-                          .length
+              <div className="absolute inset-0 transition-opacity duration-500 opacity-100">
+                {dest.highlights[hoveredHighlight.highlightIdx].images[
+                  hoveredHighlight.imageIdx
+                ] ? (
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={
+                        dest.highlights[hoveredHighlight.highlightIdx].images[
+                          hoveredHighlight.imageIdx
+                        ]
                       }
-                      )
-                    </p>
-                  )}
-                </div>
+                      alt={dest.highlights[hoveredHighlight.highlightIdx].name}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 280px, 400px"
+                    />
+                    {/* Overlay with highlight name */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end justify-center pb-6">
+                      <div className="text-center px-4">
+                        <p className="text-white text-lg md:text-xl font-serif drop-shadow-lg">
+                          {dest.highlights[hoveredHighlight.highlightIdx].name}
+                        </p>
+                        {isMobile && (
+                          <p className="text-white text-xs mt-2 opacity-80">
+                            ({hoveredHighlight.imageIdx + 1}/
+                            {
+                              dest.highlights[hoveredHighlight.highlightIdx]
+                                .images.length
+                            }
+                            )
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  // Fallback if no highlight image
+                  <div className="w-full h-full flex items-center justify-center bg-warm-tan/50">
+                    <div className="text-center">
+                      <div className="text-7xl mb-4">📸</div>
+                      <p className="text-white text-lg font-serif">
+                        {dest.highlights[hoveredHighlight.highlightIdx].name}
+                      </p>
+                      {isMobile && (
+                        <p className="text-white text-xs mt-2 opacity-70">
+                          ({hoveredHighlight.imageIdx + 1}/
+                          {
+                            dest.highlights[hoveredHighlight.highlightIdx]
+                              .images.length
+                          }
+                          )
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
